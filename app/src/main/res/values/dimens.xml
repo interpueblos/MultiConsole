@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Alberto's module -->
+    <dimen name="detail_backdrop_height">250dp</dimen>
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_top_margin">5dp</dimen>
+    <dimen name="card_radius_cofradia">5dp</dimen>
+    <!-- Alberto's module end -->
+</resources>
