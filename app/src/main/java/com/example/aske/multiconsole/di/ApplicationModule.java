@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.example.aske.multiconsole.business.GetVideogamesInteractoImpl;
+import com.example.aske.multiconsole.business.GetVideogamesInteractorImpl;
 import com.example.aske.multiconsole.business.GetVideogamesInteractor;
 import com.example.aske.multiconsole.data.VideogameRepository;
 import com.example.aske.multiconsole.data.VideogameRepositoryImpl;
@@ -46,7 +46,7 @@ public class ApplicationModule {
     @Provides
     @Singleton
     public GetVideogamesInteractor provideGetVideogamesInteractor(VideogameRepository repository) {
-        return new GetVideogamesInteractoImpl(repository);
+        return new GetVideogamesInteractorImpl(repository);
     }
 
     @Provides

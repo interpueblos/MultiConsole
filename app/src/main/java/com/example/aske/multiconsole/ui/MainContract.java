@@ -1,5 +1,7 @@
 package com.example.aske.multiconsole.ui;
 
+import android.content.Context;
+
 import com.example.aske.multiconsole.ui.model.VideogameModel;
 
 import java.util.List;
@@ -22,6 +24,6 @@ public interface MainContract {
 
         void detachView();
 
-        void init();
+        void init(Context context);
     }
 }

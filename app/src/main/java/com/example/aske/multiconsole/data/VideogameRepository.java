@@ -1,5 +1,7 @@
 package com.example.aske.multiconsole.data;
 
+import android.content.Context;
+
 import com.example.aske.multiconsole.data.entities.Videogame;
 
 import java.util.List;
@@ -10,5 +12,5 @@ import java.util.List;
 
 public interface VideogameRepository {
 
-    List<Videogame> getVideogames();
+    List<Videogame> getVideogames(Context context);
 }

@@ -1,5 +1,7 @@
 package com.example.aske.multiconsole.ui;
 
+import android.content.Context;
+
 import com.example.aske.multiconsole.business.GetVideogamesInteractor;
 import com.example.aske.multiconsole.ui.mapper.VideogameModelDataMapper;
 import com.example.aske.multiconsole.ui.model.VideogameModel;
@@ -41,9 +43,9 @@ public class MainPresenter implements MainContract.MainPresenter{
     }
 
     @Override
-    public void init() {
+    public void init(Context context) {
         if (videogameList.isEmpty()) {
-            view.renderVideogames((List)mapper.transform((Collection)getVideogamesInteractor.execute()));
+            view.renderVideogames((List)mapper.transform((Collection)getVideogamesInteractor.execute(context)));
         } else {
             if (view != null) {
                 view.renderVideogames(videogameList);

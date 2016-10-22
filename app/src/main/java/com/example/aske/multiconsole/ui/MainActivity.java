@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
         ButterKnife.bind(this);
         initView();
         presenter.attachView(this);
-        presenter.init();
+        presenter.init(this);
     }
 
     @Override

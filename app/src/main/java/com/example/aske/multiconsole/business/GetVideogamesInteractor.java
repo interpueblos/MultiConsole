@@ -1,5 +1,7 @@
 package com.example.aske.multiconsole.business;
 
+import android.content.Context;
+
 import com.example.aske.multiconsole.data.entities.Videogame;
 
 import java.util.List;
@@ -9,5 +11,5 @@ import java.util.List;
  */
 
 public interface GetVideogamesInteractor {
-    List<Videogame> execute();
+    List<Videogame> execute(Context context);
 }
