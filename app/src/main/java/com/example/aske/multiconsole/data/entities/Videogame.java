@@ -16,7 +16,8 @@ public class Videogame {
     public Videogame(){
     }
 
-    public Videogame(String screenshot, String titulo, String descripcion){
+    public Videogame(int id, String screenshot, String titulo, String descripcion){
+        this.id = id;
         this.screenshot = screenshot;
         this.titulo = titulo;
         this.descripcion = descripcion;

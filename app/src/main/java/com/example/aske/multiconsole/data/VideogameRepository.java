@@ -13,4 +13,5 @@ import java.util.List;
 public interface VideogameRepository {
 
     List<Videogame> getVideogames(Context context);
+    Videogame getVideogame(Context context, int id);
 }

@@ -1,5 +1,6 @@
 package com.example.aske.multiconsole.di;
 
+import com.example.aske.multiconsole.ui.DetailActivity;
 import com.example.aske.multiconsole.ui.MainActivity;
 
 import javax.inject.Singleton;
@@ -15,4 +16,5 @@ import dagger.Component;
 public interface ApplicationComponent {
 
     void inject(MainActivity target);
+    void inject(DetailActivity target);
 }

@@ -12,4 +12,5 @@ import java.util.List;
 
 public interface GetVideogamesInteractor {
     List<Videogame> execute(Context context);
+    Videogame getVideogame(Context context, int id);
 }

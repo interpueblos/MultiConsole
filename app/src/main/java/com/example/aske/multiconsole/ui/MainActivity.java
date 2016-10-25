@@ -1,7 +1,9 @@
 package com.example.aske.multiconsole.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.example.aske.multiconsole.App;
@@ -16,7 +18,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MainContract.MainView{
+public class MainActivity extends AppCompatActivity implements MainContract.MainView, VideogameAdapter.VideogameClickListener{
     @Inject
     MainContract.MainPresenter presenter;
     @Inject
@@ -26,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
     @BindView(R.id.main_recycler_view)
     RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,11 +64,21 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
     }
 
     private void initRecyclerView() {
-        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.setAdapter(adapter);
+        adapter.setmListener(this);
     }
 
     private void initView() {
         initRecyclerView();
+    }
+
+    @Override
+    public void onClick(int position) {
+        VideogameModel selectedVideogame = adapter.getVideoGame(position);
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+        intent.putExtra("idv", selectedVideogame.getId());
+        startActivity(intent);
+        //Toast.makeText(getApplicationContext(), "CLICK: "+selectedVideogame.getTitulo(), Toast.LENGTH_SHORT).show();
     }
 }

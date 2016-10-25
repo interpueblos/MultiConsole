@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.aske.multiconsole.R;
 import com.example.aske.multiconsole.ui.model.VideogameModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +27,8 @@ import butterknife.ButterKnife;
 public class VideogameAdapter extends RecyclerView.Adapter<VideogameAdapter.ViewHolder> {
 
     private List<VideogameModel> items;
+
+    private VideogameClickListener mListener;
 
     @Inject
     public VideogameAdapter() {
@@ -45,8 +48,18 @@ public class VideogameAdapter extends RecyclerView.Adapter<VideogameAdapter.View
         holder.title.setText(item.getTitulo());
         Resources res = holder.imageView.getResources();
         int resID = res.getIdentifier(item.getScreeshot() , "drawable", "com.example.aske.multiconsole");
-        holder.imageView.setImageResource(resID);
-        //holder.descripcion.setText(item.getDescripcion());
+        //holder.imageView.setImageResource(resID);
+
+        int idDrawableNoImage = holder.imageView.getResources().getIdentifier("noimage", "drawable","com.example.aske.multiconsole");
+        //int idDrawable = holder.imageView.getResources().getIdentifier(item.getScreeshot(), "drawable", "com.example.aske.multiconsole");
+
+        if (resID == 0) resID = idDrawableNoImage;
+
+        Picasso.with(holder.imageView.getContext())
+                .load(resID)
+                .placeholder(idDrawableNoImage)
+                .error(idDrawableNoImage)
+                .into(holder.imageView);
     }
 
     @Override
@@ -59,7 +72,11 @@ public class VideogameAdapter extends RecyclerView.Adapter<VideogameAdapter.View
         notifyDataSetChanged();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public VideogameModel getVideoGame(int position) {
+        return this.items.get(position);
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.card_titulo)
         TextView title;
@@ -68,8 +85,28 @@ public class VideogameAdapter extends RecyclerView.Adapter<VideogameAdapter.View
 
         public ViewHolder(View itemView) {
             super(itemView);
+            itemView.setClickable(true);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onClick(getLayoutPosition());
+        }
+
+    }
+
+    public interface VideogameClickListener {
+        void onClick(int position);
+    }
+
+    public VideogameClickListener getmListener() {
+        return mListener;
+    }
+
+    public void setmListener(VideogameClickListener mListener) {
+        this.mListener = mListener;
     }
 
 }

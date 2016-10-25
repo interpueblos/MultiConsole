@@ -37,7 +37,10 @@ public class VideogameRepositoryImpl implements VideogameRepository{
                 String screenshot = "";
                 String titulo = "";
                 String descripcion = "";
+                int idv = 0;
                 while (cursor.isAfterLast() == false) {
+                    idv = cursor.getInt(cursor
+                            .getColumnIndex("id"));
                     screenshot = cursor.getString(cursor
                             .getColumnIndex("screenshot"));
                     titulo = cursor.getString(cursor
@@ -45,7 +48,7 @@ public class VideogameRepositoryImpl implements VideogameRepository{
                     descripcion = cursor.getString(cursor
                             .getColumnIndex("descripcion"));
 
-                    videogames.add(new Videogame(screenshot,titulo,descripcion));
+                    videogames.add(new Videogame(idv, screenshot,titulo,descripcion));
 
                     cursor.moveToNext();
                 }
@@ -76,5 +79,59 @@ public class VideogameRepositoryImpl implements VideogameRepository{
         videogames.add(new Videogame("frogger","Frogger","Popular videojuego de arcade."));
 */
         return videogames;
+    }
+
+    public Videogame getVideogame (Context context, int id) {
+        Videogame videogame = null;
+
+        //Abrimos la base de datos 'DBUsuarios' en modo escritura
+        MultiConsoleSQLiteHelper mcdbh =
+                new MultiConsoleSQLiteHelper(context, "DBMulticonsole", null, 1);
+
+        SQLiteDatabase db = mcdbh.getReadableDatabase();
+
+        //Si hemos abierto correctamente la base de datos
+        if(db != null)
+        {
+            Cursor cursor = db.rawQuery("select * from Videogame where id="+id,null);
+
+            if (cursor .moveToFirst()) {
+                String screenshot = "";
+                String titulo = "";
+                String descripcion = "";
+                String compania = "";
+                String fecha = "";
+                String plataforma = "";
+                int idv = 0;
+                while (cursor.isAfterLast() == false) {
+                    idv = cursor.getInt(cursor
+                            .getColumnIndex("id"));
+                    screenshot = cursor.getString(cursor
+                            .getColumnIndex("screenshot"));
+                    titulo = cursor.getString(cursor
+                            .getColumnIndex("titulo"));
+                    descripcion = cursor.getString(cursor
+                            .getColumnIndex("descripcion"));
+                    compania = cursor.getString(cursor
+                            .getColumnIndex("compania"));
+                    fecha = cursor.getString(cursor
+                            .getColumnIndex("fecha"));
+                    plataforma = cursor.getString(cursor
+                            .getColumnIndex("plataforma"));
+
+                    videogame = new Videogame(idv, screenshot,titulo,descripcion);
+                    videogame.setCompañia(compania);
+                    videogame.setFecha(fecha);
+                    videogame.setPlataforma(plataforma);
+
+                    cursor.moveToNext();
+                }
+            }
+
+            //Cerramos la base de datos
+            db.close();
+        }
+
+        return videogame;
     }
 }

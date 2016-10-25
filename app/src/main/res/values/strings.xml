@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MultiConsole</string>
+    <string name="Titulo">Titulo: </string>
+    <string name="Descripcion">Descripción: </string>
+    <string name="Compania">Compañia: </string>
+    <string name="Plataforma">Plataforma: </string>
 </resources>

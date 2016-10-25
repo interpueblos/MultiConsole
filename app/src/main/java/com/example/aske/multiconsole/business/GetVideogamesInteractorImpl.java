@@ -21,4 +21,8 @@ public class GetVideogamesInteractorImpl implements GetVideogamesInteractor{
     public List<Videogame> execute(Context context) {
         return videogameRepository.getVideogames(context);
     }
+
+    public Videogame getVideogame(Context context, int id) {
+        return videogameRepository.getVideogame(context, id);
+    }
 }
