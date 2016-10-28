@@ -2,9 +2,12 @@ package com.example.aske.multiconsole.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.View;
 
 import com.example.aske.multiconsole.App;
 import com.example.aske.multiconsole.R;
@@ -28,7 +31,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
 
     @BindView(R.id.main_recycler_view)
     RecyclerView recyclerView;
-
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,26 @@ public class MainActivity extends AppCompatActivity implements MainContract.Main
         ((App) getApplication()).getApplicationComponent().inject(this);
         ButterKnife.bind(this);
         initView();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                Intent intent = new Intent(MainActivity.this, FormActivity.class);
+                startActivity(intent);
+            }
+        });
+
         presenter.attachView(this);
         presenter.init(this);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     @Override

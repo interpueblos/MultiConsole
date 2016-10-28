@@ -4,8 +4,14 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.example.aske.multiconsole.data.bd.MultiConsoleContract;
 import com.example.aske.multiconsole.data.bd.MultiConsoleSQLiteHelper;
 import com.example.aske.multiconsole.data.entities.Videogame;
+import com.mongodb.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import org.bson.Document;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,14 +30,42 @@ public class VideogameRepositoryImpl implements VideogameRepository{
 
         //Abrimos la base de datos 'DBUsuarios' en modo escritura
         MultiConsoleSQLiteHelper mcdbh =
-                new MultiConsoleSQLiteHelper(context, "DBMulticonsole", null, 1);
+                new MultiConsoleSQLiteHelper(context);
 
         SQLiteDatabase db = mcdbh.getReadableDatabase();
+
+        // Define a projection that specifies which columns from the database
+        // you will actually use after this query.
+        String[] projection = {
+                MultiConsoleContract.MultiConsole._ID,
+                MultiConsoleContract.MultiConsole.COLUMN_NAME_SCREENSHOT,
+                MultiConsoleContract.MultiConsole.COLUMN_NAME_TITULO,
+                MultiConsoleContract.MultiConsole.COLUMN_NAME_DESCRIPCION
+        };
+
+        // Filter results WHERE "title" = 'My Title'
+        //String selection = MultiConsoleContract.MultiConsole.COLUMN_NAME_TITULO + " = ?";
+        //String[] selectionArgs = { "My Title" };
+
+        // How you want the results sorted in the resulting Cursor
+        String sortOrder =
+                MultiConsoleContract.MultiConsole.COLUMN_NAME_TITULO + " ASC";
+
 
         //Si hemos abierto correctamente la base de datos
         if(db != null)
         {
-            Cursor cursor = db.rawQuery("select * from Videogame",null);
+            //Cursor cursor = db.rawQuery("select * from Videogame",null);
+
+            Cursor cursor = db.query(
+                    MultiConsoleContract.MultiConsole.TABLE_NAME,                     // The table to query
+                    projection,                             // The columns to return
+                    null,                                   // The columns for the WHERE clause
+                    null,                                   // The values for the WHERE clause
+                    null,                                   // don't group the rows
+                    null,                                   // don't filter by row groups
+                    sortOrder                               // The sort order
+            );
 
             if (cursor .moveToFirst()) {
                 String screenshot = "";
@@ -40,7 +74,7 @@ public class VideogameRepositoryImpl implements VideogameRepository{
                 int idv = 0;
                 while (cursor.isAfterLast() == false) {
                     idv = cursor.getInt(cursor
-                            .getColumnIndex("id"));
+                            .getColumnIndex("_id"));
                     screenshot = cursor.getString(cursor
                             .getColumnIndex("screenshot"));
                     titulo = cursor.getString(cursor
@@ -53,31 +87,11 @@ public class VideogameRepositoryImpl implements VideogameRepository{
                     cursor.moveToNext();
                 }
             }
-
+            cursor.close();;
             //Cerramos la base de datos
             db.close();
         }
 
-        /*videogames.add(new Videogame("a1942","1942","Videojuego shoot em up"));
-        videogames.add(new Videogame("amidar","Amidar","Juego abstracto en donde los jugadores deben colorear todos los rectángulos que aparecen en la pantalla"));
-        videogames.add(new Videogame("arkanoid","Arkanoid","Videojuego de arcade desarrollado por Taito en 1986. Está basado en los Breakout de Atari de los años 70."));
-        videogames.add(new Videogame("asteroidsdeluxe","Asteroids deluxe","Popular videojuego de arcade basado en vectores."));
-        videogames.add(new Videogame("bubbles","Bubbles","Popular videojuego de arcade."));
-        videogames.add(new Videogame("burgertime","Burger time","Popular videojuego de arcade."));
-        videogames.add(new Videogame("burninrubber","Burnin rubber","Popular videojuego de arcade."));
-        videogames.add(new Videogame("cabal","Cabal","Popular videojuego de arcade."));
-        videogames.add(new Videogame("centipede","Centipede","Popular videojuego de arcade."));
-        videogames.add(new Videogame("columns","Columns","Popular videojuego de arcade."));
-        videogames.add(new Videogame("commando","Commando","Popular videojuego de arcade."));
-        videogames.add(new Videogame("digdug","Digdug","Popular videojuego de arcade."));
-        videogames.add(new Videogame("donkeykong","Donkey kong","Popular videojuego de arcade."));
-        videogames.add(new Videogame("dkong3","Donkey kong 3","Popular videojuego de arcade."));
-        videogames.add(new Videogame("donkeykongjr","Donkey kong jr","Popular videojuego de arcade."));
-        videogames.add(new Videogame("elevatoraction","Elevator action","Popular videojuego de arcade."));
-        videogames.add(new Videogame("exerion","Exerion","Popular videojuego de arcade."));
-        videogames.add(new Videogame("frenzy","Frenzy","Popular videojuego de arcade."));
-        videogames.add(new Videogame("frogger","Frogger","Popular videojuego de arcade."));
-*/
         return videogames;
     }
 
@@ -86,14 +100,16 @@ public class VideogameRepositoryImpl implements VideogameRepository{
 
         //Abrimos la base de datos 'DBUsuarios' en modo escritura
         MultiConsoleSQLiteHelper mcdbh =
-                new MultiConsoleSQLiteHelper(context, "DBMulticonsole", null, 1);
+                new MultiConsoleSQLiteHelper(context);
 
         SQLiteDatabase db = mcdbh.getReadableDatabase();
+
+
 
         //Si hemos abierto correctamente la base de datos
         if(db != null)
         {
-            Cursor cursor = db.rawQuery("select * from Videogame where id="+id,null);
+            Cursor cursor = db.rawQuery("select * from Videogame where _id="+id,null);
 
             if (cursor .moveToFirst()) {
                 String screenshot = "";
@@ -105,7 +121,7 @@ public class VideogameRepositoryImpl implements VideogameRepository{
                 int idv = 0;
                 while (cursor.isAfterLast() == false) {
                     idv = cursor.getInt(cursor
-                            .getColumnIndex("id"));
+                            .getColumnIndex("_id"));
                     screenshot = cursor.getString(cursor
                             .getColumnIndex("screenshot"));
                     titulo = cursor.getString(cursor
@@ -131,6 +147,15 @@ public class VideogameRepositoryImpl implements VideogameRepository{
             //Cerramos la base de datos
             db.close();
         }
+
+        //MongoClientURI uri = new MongoClientURI( "mongodb://username:password@www.example.com:12345/db-name" );
+        //MongoClientURI uri = new MongoClientURI( "mongodb://localhost:27017/MultiConsole" );
+        //MongoClient mongoClient = new MongoClient(uri);
+        MongoClient mongoClient = new MongoClient();
+        MongoDatabase dbMongo = mongoClient.getDatabase("MultiConsole");
+        MongoCollection<Document> coll = dbMongo.getCollection("videogame");
+
+        //Document first = coll.find(new Document("_id",1)).first();
 
         return videogame;
     }

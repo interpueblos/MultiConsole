@@ -3,5 +3,11 @@
     <string name="Titulo">Titulo: </string>
     <string name="Descripcion">Descripción: </string>
     <string name="Compania">Compañia: </string>
+    <string name="Fecha">Fecha: </string>
     <string name="Plataforma">Plataforma: </string>
+    <string name="hint_titulo">Titulo</string>
+    <string name="hint_descripcion">Descripción</string>
+    <string name="hint_compania">Compañia</string>
+    <string name="hint_fecha">Fecha</string>
+    <string name="hint_plataforma">Plataforma</string>
 </resources>
